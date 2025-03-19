@@ -11,6 +11,10 @@ public interface ICalculateurImpot {
 
     public void calculImpotSurRevenuNet();
 
+    /**
+     * Obtenir le revenu net du delarant 1
+     * @return int
+     */
     public int getRevenuNetDeclatant1();
     public int getRevenuNetDeclatant2();
     public double getContribExceptionnelle();
