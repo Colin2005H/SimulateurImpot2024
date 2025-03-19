@@ -15,21 +15,39 @@ pipeline {
             }
         }
 
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/votre-utilisateur/votre-depot.git'
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
-                    // Exécuter les commandes de build
-                    sh './gradlew build' // Pour un projet Gradle
-                    // ou
-                    // sh 'mvn clean install' // Pour un projet Maven
+                    sh './gradlew build' // Remplacez par votre commande de build
                 }
             }
             post {
-                success {
-                    echo 'Build réussi.'
-                }
                 failure {
-                    echo 'Échec du build.'
+                    script {
+                        // Copier les fichiers HTML et MP3 dans le répertoire de travail
+                        sh 'cp padoru-smooth.gif .'
+                        //sh 'cp path/to/your/techno.mp3 .'
+
+                        // Publier le fichier HTML
+                        publishHTML target: [
+                            reportDir: '.',
+                            reportFiles: 'error.html',
+                            reportTitle: 'Erreur de Build'
+                        ]
+
+                        // Jouer le son (si le plugin Audio Notification est configuré)
+                        //audioNotification soundFile: 'techno.mp3'
+                    }
                 }
             }
         }
@@ -84,3 +102,4 @@ pipeline {
         }
     }
 }
+
