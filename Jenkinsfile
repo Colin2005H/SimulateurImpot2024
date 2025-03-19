@@ -15,27 +15,17 @@ pipeline {
             }
         }
 
-pipeline {
-    agent any
-
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/votre-utilisateur/votre-depot.git'
-            }
-        }
-
         stage('Build') {
             steps {
                 script {
-                    sh './gradlew build' // Remplacez par votre commande de build
+                    bat './gradlew build' // Remplacez par votre commande de build
                 }
             }
             post {
                 failure {
                     script {
                         // Copier les fichiers HTML et MP3 dans le répertoire de travail
-                        sh 'cp padoru-smooth.gif .'
+                        bat 'cp padoru-smooth.gif .'
                         //sh 'cp path/to/your/techno.mp3 .'
 
                         // Publier le fichier HTML
@@ -56,7 +46,7 @@ pipeline {
             steps {
                 script {
                     // Exécuter les tests unitaires
-                    sh 'mvn test'
+                    bat 'mvn test'
                 }
             }
             post {
@@ -76,7 +66,7 @@ pipeline {
             steps {
                 script {
                     // Exécuter les commandes de déploiement
-                    sh './scripts/deploy.sh'
+                    bat './scripts/deploy.sh'
                 }
             }
             post {
